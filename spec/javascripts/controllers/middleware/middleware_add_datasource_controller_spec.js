@@ -1,0 +1,43 @@
+'use strict';
+
+describe('middlewareAddDatasourceController', function () {
+
+  var rootScope, $scope, $controller, $httpBackend, miqService;
+
+  beforeEach(module('ManageIQ'));
+
+  beforeEach(inject(function(_$httpBackend_, $rootScope, _$controller_, _miqService_) {
+    miqService = _miqService_;
+    $scope = $rootScope.$new();
+    rootScope = $rootScope;
+    $httpBackend = _$httpBackend_;
+
+    $controller = _$controller_('mwAddDatasourceController', {
+      $scope: $scope,
+      miqService: miqService
+    });
+
+    spyOn(rootScope, '$broadcast');
+  }));
+
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
+
+  describe('Test Add Datasource Controller', function() {
+    it('should have datasources populated ', function () {
+
+      expect($scope.chooseDsModel.datasources).toBeDefined();
+      expect($scope.chooseDsModel.datasources.length).toBeGreaterThan(1);
+
+    });
+
+    it('should submit fire mwAddDatasourceEvent on finishAddDatasource step', function () {
+      $scope.finishAddDatasource();
+
+      expect(rootScope.$broadcast).toHaveBeenCalled();
+    });
+  });
+
+});
