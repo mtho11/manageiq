@@ -16,7 +16,8 @@ function MwAddDataSourceCtrl($scope, $rootScope, miqService, mwAddDataSourceServ
 
   $scope.step1DsModel = {
     datasourceName : '',
-    jndiName : ''
+    jndiName : '',
+    xaDatasource : false
   };
 
   $scope.step2DsModel = {
@@ -105,7 +106,7 @@ function MwAddDataSourceCtrl($scope, $rootScope, miqService, mwAddDataSourceServ
   var getPayload = function () {
     return {
       'id': angular.element('#server_id').val(),
-      'xaDatasource': false,
+      'xaDatasource': $scope.step1DsModel.xaDatasource,
       'datasourceName': $scope.step1DsModel.datasourceName,
       'jndiName': $scope.step1DsModel.jndiName,
       'driverName': $scope.step2DsModel.jdbcDriverName,

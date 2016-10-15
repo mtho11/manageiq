@@ -37,6 +37,16 @@
         %p.ng-error-messages{"ng-show" => "step1Form.jndi_name_input.$error.maxlength"}
           = _("Maximum length is 256")
 
+    .form-group
+      %label.col-md-4.control-label{:for => "xa_datasource_cb"}
+        = _("XA Datasource")
+      .col-md-8
+        %input#xa_datasource_cb{:type             => "checkbox",
+                                "bs-switch"       => "",
+                                "switch-on-text"  => "Yes",
+                                "switch-off-text" => "No",
+                                "ng-model"        => "step1DsModel.xaDatasource"}
+
     .modal-footer
       %button.btn.btn-default.dialog-cancel-button{:type      => "button",
                                                    "ng-click" =>"reset()"}
