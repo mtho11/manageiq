@@ -36,7 +36,7 @@ function MwAddDatasourceService($http, $q) {
     return Object.freeze(datasources);
   };
 
-  this.determineConnectionUrl = function (dsSelection) {
+  this.determineConnectionUrl = function(dsSelection) {
     var PREFIX = 'jdbc:';
     var driverName = dsSelection.driverName;
 
