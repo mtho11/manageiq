@@ -31,6 +31,16 @@ function MwAddDatasourceService($http, $q) {
       driverName: 'mysql', driverModuleName: 'com.mysql', driverClass: 'com.mysql.jdbc.Driver',
       connectionUrl: '://localhost:3306/db_name'}
   ];
+  this.getExistingJdbcDrivers = function() {
+    var deferred = $q.defer();
+
+    $http.get('/middleware_server/jdbc_drivers').then(function(data) {
+      deferred.resolve(data.data);
+    }).catch(function(errorMsg) {
+      deferred.reject(errorMsg);
+    });
+    return deferred.promise;
+  };
 
   this.getDatasources = function() {
     return Object.freeze(datasources);
@@ -47,4 +57,5 @@ function MwAddDatasourceService($http, $q) {
     return $http.post('/middleware_server/add_datasource', angular.toJson(payload));
   }
 }
+
 
