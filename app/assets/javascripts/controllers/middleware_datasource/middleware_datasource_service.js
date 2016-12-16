@@ -37,7 +37,7 @@ function MwAddDatasourceService($http, $q) {
   var xaDatasources = [
     {id: 'H2', label: 'H2 XA', name: 'H2XADS', jndiName: 'java:/H2XADS',
       driverName: 'h2', driverModuleName: 'com.h2database.h2',
-      xaDataSourceClass: 'org.h2.jdbcx.JdbcDataSource',
+      driverClass: 'org.h2.jdbcx.JdbcDataSource',
       properties: {
         URL: 'jdbc:h2:mem:test',
       },
@@ -56,7 +56,7 @@ function MwAddDatasourceService($http, $q) {
     {id: 'MSSQL', label: 'Microsoft SQL Server XA', name: 'MSSQLXADS',
       jndiName: 'java:/MSSQLXADS',
       driverName: 'sqlserver', driverModuleName: 'com.microsoft',
-      xaDataSourceClass: 'com.microsoft.sqlserver.jdbc.SQLServerXADataSource',
+      driverClass: 'com.microsoft.sqlserver.jdbc.SQLServerXADataSource',
       properties: {
         DatabaseName: 'postgresdb',
         SelectMethod: 'cursor',
@@ -66,7 +66,7 @@ function MwAddDatasourceService($http, $q) {
     {id: 'ORACLE', label: 'Oracle XA', name: 'XAOracleDS',
       jndiName: 'java:/XAOracleDS',
       driverName: 'oracle', driverModuleName: 'com.oracle',
-      xaDataSourceClass: 'oracle.jdbc.xa.client.OracleXADataSource',
+      driverClass: 'oracle.jdbc.xa.client.OracleXADataSource',
       properties: {
         URL: 'jdbc:oracle:oci8',
       },
@@ -74,6 +74,7 @@ function MwAddDatasourceService($http, $q) {
     {id: 'DB2', label: 'IBM DB2 XA', name: 'DB2XADS',
       jndiName: 'java:/DB2XADS',
       driverName: 'ibmdb2', driverModuleName: 'com.ibm',
+      driverClass: 'COM.ibm.db2.jdbc.DB2XADataSource',
       properties: {
         DatabaseName: 'ibmdb2db',
         PortNumber: 446,
@@ -83,7 +84,7 @@ function MwAddDatasourceService($http, $q) {
     {id: 'SYBASE', label: 'Sybase XA', name: 'SybaseXADS',
       jndiName: 'java:/SybaseXADS',
       driverName: 'sybase', driverModuleName: 'com.sybase',
-      xaDataSourceClass: 'com.sybase.jdbc4.jdbc.SybXADataSource',
+      driverClass: 'com.sybase.jdbc4.jdbc.SybXADataSource',
       properties: {
         DatabaseName: 'mydatabase',
         NetworkProtocol: 'Tds',
@@ -94,12 +95,12 @@ function MwAddDatasourceService($http, $q) {
     {id: 'MARIADB', label: 'MariaDB XA', name: 'MariaDBDS',
       jndiName: 'java:jboss/datasources/MariaDBDS',
       driverName: 'mariadb', driverModuleName: 'org.mariadb',
-      driverClass: 'org.mariadb.jdbc.Driver',
+      driverClass: '??',
       connectionUrl: '://localhost:3306/db_name'},
     {id: 'MYSQL', label: 'MySql XA', name: 'MySqlDS',
       jndiName: 'java:/MysqlXADS',
       driverName: 'mysql', driverModuleName: 'com.mysql',
-      xaDataSourceClass: 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource',
+      driverClass: 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource',
       properties: {
         DatabaseName: 'mydatabase',
         NetworkProtocol: 'Tds',
@@ -131,6 +132,10 @@ function MwAddDatasourceService($http, $q) {
 
   self.getDatasources = function() {
     return Object.freeze(datasources);
+  };
+
+  self.getXaDatasources = function() {
+    return Object.freeze(xaDatasources);
   };
 
   self.isXaDriver = function(driver) {
@@ -174,7 +179,13 @@ function MwAddDatasourceService($http, $q) {
     if (self.isValidDatasourceName(driverSelection.id)) {
       dsSelection = self.findDatasourceById(driverSelection.id);
     } else {
-      dsSelection = self.findDatasourceByDriverClass(driverSelection.driverClass);
+      var selectedDriverClass;
+      if (driverSelection.driverClass !== undefined) {
+        selectedDriverClass = driverSelection.driverClass;
+      } else {
+        selectedDriverClass = driverSelection.xaDsClass;
+      }
+      dsSelection = self.findDatasourceByDriverClass(selectedDriverClass);
     }
     return dsSelection;
   };
@@ -184,9 +195,8 @@ function MwAddDatasourceService($http, $q) {
     return JDBC_PREFIX + dsSelection.driverName + dsSelection.connectionUrl;
   };
 
-  this.sendAddDatasource = function(payload) {
+  self.sendAddDatasource = function(payload) {
     return $http.post('/middleware_server/add_datasource', angular.toJson(payload));
-  }
+  };
 }
-
 
