@@ -46,31 +46,6 @@ function MwAddDatasourceCtrl($scope, $rootScope, miqService, mwAddDatasourceServ
   };
 
   vm.step3DsModel = {
-    listConfig: {
-      selectItems: true,
-      selectedItems: [],
-//    onSelect: handleSelect,
-//    onCheckboxChange: handleSelected,
-      showSelectBox: true,
-    },
-    items: [
-      {
-        key: 'key0',
-        value: 'value0',
-      },
-      {
-        key: 'key1',
-        value: 'value3',
-      },
-      {
-        key: 'key2',
-        value: 'value3',
-      },
-      {
-        key: 'key3',
-        value: 'value3',
-      },
-    ],
     validationRegex: /^jdbc:\S+$/,
     connectionUrl: '',
     userName: '',

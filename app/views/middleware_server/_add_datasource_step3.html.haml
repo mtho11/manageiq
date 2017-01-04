@@ -67,18 +67,6 @@
 
     .form-group
       %label.col-md-4.control-label{:for => "xa_properties"}
-        = _("Props")
-      .col-md-4
-        %div.pf-list-view#xa_property_table{:config  => "vm.step3DsModel.listConfig",
-                                            :items   => "vm.step3DsModel.items"}
-          %div.list-view-pf-description
-            %div.list-group-item-heading
-              = _("Props")
-              %div.list-group-item-text
-                = _("Props")
-
-    .form-group
-      %label.col-md-4.control-label{:for => "xa_properties"}
         = _("Edit ")
       .col-md-4
         %input.form-control#xa_edit_key_input{:type      => "text",
